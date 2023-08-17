@@ -1,0 +1,15 @@
+html,
+body,
+#app,
+#container {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.def_popper_type {
+  border: none !important;
+  background-color: #FAFCFF;
+  box-shadow: var(--el-box-shadow-light);
+}

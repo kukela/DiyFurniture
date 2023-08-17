@@ -1,0 +1,33 @@
+{
+  "name": "frame_create_web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@babylonjs/core": "^6.5.1",
+    "@babylonjs/gui": "^6.5.1",
+    "@babylonjs/loaders": "^6.5.1",
+    "@babylonjs/materials": "^6.5.1",
+    "@babylonjs/serializers": "^6.5.1",
+    "earcut": "^2.2.4",
+    "element-plus": "^2.3.5",
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@babylonjs/gui-editor": "^6.4.1",
+    "@babylonjs/inspector": "^6.4.1",
+    "@types/earcut": "^2.1.1",
+    "@vitejs/plugin-vue": "^4.1.0",
+    "sass": "^1.62.1",
+    "typescript": "^5.0.2",
+    "unplugin-auto-import": "^0.16.4",
+    "unplugin-vue-components": "^0.24.1",
+    "vite": "^4.3.2",
+    "vue-tsc": "^1.4.2"
+  }
+}
