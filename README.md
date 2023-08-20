@@ -12,7 +12,7 @@
 
 ## 2. 示例
 ### 2.1. 玄关柜
-通过几个可定制模块化柜子按需实现需要的功能，有拆卸简单，美观方便等特点，兼容10~35cm深度。
+通过几个可定制模块化柜子按需实现需要的功能，有拆卸简单，美观方便等特点，适合10~35cm的柜体深度。
 **[详情页](https://gitee.com/kukela/diy-furniture/tree/master/example/玄关柜/玄关柜.md)**
-**[...介绍视频]()**
-[示例图]
+**[介绍视频，正在制作中]()**
+![](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/%E7%8E%84%E5%85%B3%E6%9F%9C/ZQ1.png))
