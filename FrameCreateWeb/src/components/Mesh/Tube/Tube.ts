@@ -1,14 +1,17 @@
 import { Mesh, Vector3 } from '@babylonjs/core';
-import { LUnitUtils, LUnitType } from '../../utils/LUnitUtils';
+import { LUnitUtils } from '../../utils/LUnitUtils';
 
 export default abstract class Tube extends Mesh {
     // config
+    shapeW: number = 0.15
+    shapeH: number = 0.15
+    minHeight: number = 0.1
+    hInterval: number = 0.01
+
     shapeCpX: number = 50
-    shapeCpXUnit: LUnitType = LUnitType.Percent
+    isShapeCpXPercent: boolean = true
     shapeCpY: number = 50
-    shapeCpYUnit: LUnitType = LUnitType.Percent
-    minHeight: number = 1
-    minHeightUnit: LUnitType = LUnitType.MM
+    isShapeCpYPercent: boolean = true
     // gen
     path: Vector3[] = []
 
@@ -18,51 +21,50 @@ export default abstract class Tube extends Mesh {
 
     abstract toAddMesh(h: number): void
 
+    protected abstract setConfJson(json: any): void
+
     protected _getHeight(h: number): number {
+        h = Math.round(h / this.hInterval) * this.hInterval
         if (h < this.minHeight) { h = this.minHeight }
         return h
     }
 
     setConf(conf: string | null) {
         this.metadata = conf
-        let json: any = null
+        let json: any = {}
         if (conf) {
             try {
                 json = JSON.parse(conf)
             } catch (error) {
             }
         }
-        const shapeCpXDoc = LUnitUtils.str2ValueAndUnit(json.shapeCpX)
-        const shapeCpYDoc = LUnitUtils.str2ValueAndUnit(json.shapeCpY)
-        const minHeightDoc = LUnitUtils.str2ValueAndUnit(json.minHeight)
-        let shapeCpX = shapeCpXDoc?.v
-        let shapeCpXUnit = shapeCpXDoc?.unit
-        let shapeCpY = shapeCpYDoc?.v
-        let shapeCpYUnit = shapeCpYDoc?.unit
-        let minHeight = minHeightDoc?.v
-        let minHeightUnit = minHeightDoc?.unit
+        let shapeW = LUnitUtils.str2Num(json.shapeW, null)
+        if (shapeW) this.shapeW = shapeW
+        let shapeH = LUnitUtils.str2Num(json.shapeH, null)
+        if (shapeH) this.shapeH = shapeH
+        let minHeight = LUnitUtils.str2Num(json.minHeight, null)
+        if (minHeight) this.minHeight = minHeight
+        let hInterval = LUnitUtils.str2Num(json.hInterval, null)
+        if (hInterval) this.hInterval = hInterval
 
-        if (!shapeCpX || !shapeCpXUnit) {
+        const shapeCpXDoc = LUnitUtils.str2NumOrPercent(json.shapeCpX)
+        if (!shapeCpXDoc) {
             this.shapeCpX = 50
-            this.shapeCpXUnit = LUnitType.Percent
+            this.isShapeCpXPercent = true
         } else {
-            this.shapeCpX = shapeCpX
-            this.shapeCpXUnit = shapeCpXUnit
+            this.shapeCpX = shapeCpXDoc.v
+            this.isShapeCpXPercent = shapeCpXDoc.isPercent
         }
-        if (!shapeCpY || !shapeCpYUnit) {
+        const shapeCpYDoc = LUnitUtils.str2NumOrPercent(json.shapeCpY)
+        if (!shapeCpYDoc) {
             this.shapeCpY = 50
-            this.shapeCpYUnit = LUnitType.Percent
+            this.isShapeCpYPercent = true
         } else {
-            this.shapeCpY = shapeCpY
-            this.shapeCpYUnit = shapeCpYUnit
+            this.shapeCpY = shapeCpYDoc.v
+            this.isShapeCpYPercent = shapeCpYDoc.isPercent
         }
-        if (!minHeight || !minHeightUnit) {
-            this.minHeight = 1
-            this.minHeightUnit = LUnitType.MM
-        } else {
-            this.minHeight = minHeight
-            this.minHeightUnit = minHeightUnit
-        }
+
+        this.setConfJson(json)
     }
 
     getSaveJson(): Object {

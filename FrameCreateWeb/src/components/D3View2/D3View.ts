@@ -101,12 +101,7 @@ export class D3View {
                 break
             }
             case CmdType.Add: {
-                const tJson = {
-                    shapeCpX: "50%",
-                    shapeCpY: "5mm",
-                    minHeight: "50mm",
-                }
-                this._tubeMeshManager.addTubeMesh(JSON.stringify(tJson))
+                this._tubeMeshManager.addTubeMesh(null)
                 break
             }
         }

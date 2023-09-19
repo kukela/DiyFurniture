@@ -14,7 +14,7 @@ export class MeshManager {
         this._scene = scene
     }
 
-    addTubeMesh(json: string) {
+    addTubeMesh(json: string | null) {
         this._addMeshType = AddMeshType.Tube
         const u = new TubeUtils(this._scene)
         u.addMesh(json)
