@@ -17,39 +17,37 @@ EVA薄膜是一种常用材料，常应用于雨衣、大棚膜、防滑垫、�
 		
 3. 测量两条线段之间的距离是否相等，最少要测量一次中间的距离。
 
-	[示例图]
+	![x](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/DesignGuide/EVA%E8%96%84%E8%86%9C/2.2.3%20%E6%80%8E%E4%B9%88%E9%81%BF%E5%85%8D%E8%A3%81%E5%89%AA%E8%AE%B0%E5%8F%B7%E7%94%BB%E6%AD%AA%E6%8E%89.jpg)
 
 ### 2.3. 连接铝型材步骤
 
-1. 在光滑面上画裁剪边框，并裁剪。边框尺寸参考步骤2计算。
+1. 在光滑的一面上画裁剪边框，并裁剪。边框尺寸参考步骤2计算。
 		
-	[示例图]
+	![x](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/DesignGuide/EVA%E8%96%84%E8%86%9C/2.3.1%20%E8%BF%9E%E6%8E%A5%E9%93%9D%E5%9E%8B%E6%9D%90%E6%AD%A5%E9%AA%A4.jpg)
 
-2. 画上打孔分界线，距离边框的计算公式是 (铝型材宽度+孔直径) / 2 + (保护外框>=3mm)，以1515铝型材为例是(15+6)/2+4.5=15mm，正好可以用1515铝型材画线，这条线的意义是打孔不超过这条线。
+2. 画上打孔分界线，距离边框的计算公式是 (铝型材宽度+孔直径) / 2 + (保护外框>=3mm)，以1515铝型材为例是(15+6)/2+4.5=15mm，正好可以用1515铝型材画线，有些打孔器打孔深度不够，则按照打孔器最大深度来，这条线的意义是打孔不超过这条线。
 	
-	[示例图]
+	![x](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/DesignGuide/EVA%E8%96%84%E8%86%9C/2.3.2%20%E8%BF%9E%E6%8E%A5%E9%93%9D%E5%9E%8B%E6%9D%90%E6%AD%A5%E9%AA%A4.jpg)
 	
 3. 在分界线上画上打孔记号，一般1515铝型材两边间隔3~4cm，以铝型材连接件占用槽长度为限，记号间相隔10cm左右，最好先画中间记号，再画两边。
 	
-	[示例图]
+	![x](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/DesignGuide/EVA%E8%96%84%E8%86%9C/2.3.3%20%E8%BF%9E%E6%8E%A5%E9%93%9D%E5%9E%8B%E6%9D%90%E6%AD%A5%E9%AA%A4.jpg)
 	
-4. 按照记号打孔，然后清理掉所有记号。
+4. 按照记号打孔，然后用水擦掉所有记号。
 	
-	[示例图]
+	![x](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/DesignGuide/EVA%E8%96%84%E8%86%9C/2.3.4%20%E8%BF%9E%E6%8E%A5%E9%93%9D%E5%9E%8B%E6%9D%90%E6%AD%A5%E9%AA%A4.jpg)
 	
 5. 接下来将螺丝依次穿过垫圈、空心柱、孔、垫圈，然后拧上螺母，按照这个步骤完成所有孔的安装，注意按照需求分正反面。
 	
-	[示例图]
+	![x](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/DesignGuide/EVA%E8%96%84%E8%86%9C/2.3.5%20%E8%BF%9E%E6%8E%A5%E9%93%9D%E5%9E%8B%E6%9D%90%E6%AD%A5%E9%AA%A4.jpg)
 	
 6. 最后将组装好的隔板安装上铝型材。
-	
-	[示例图]
 
 ### 2.4. 连接铝型材注意事项1
 
 最好采用包裹铝型材上面和侧面的设计，可以减少灰尘落入铝型材槽内。
 
-[示例图]  
+![x](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/DesignGuide/EVA%E8%96%84%E8%86%9C/2.4%20%E8%BF%9E%E6%8E%A5%E9%93%9D%E5%9E%8B%E6%9D%90%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B91.jpg)
 
 ### 2.5. 连接铝型材的其他方式
 
@@ -57,21 +55,21 @@ EVA薄膜是一种常用材料，常应用于雨衣、大棚膜、防滑垫、�
 
 ### 2.6. 承重能力
 
-EVA防滑垫承重能力还是可以的，底下用2根及以上横杆做支撑的台面，一般使用情况下是没多大问题的。下图是底下没有横杆支撑的情况下承重能力。
+EVA防滑垫承重能力还是可以的，底下用2根及以上横杆做支撑的台面，正常使用情况下是没多大问题的。下图是底下没有横杆支撑的情况下承重能力。
 
-[示例图]
+![x](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/DesignGuide/EVA%E8%96%84%E8%86%9C/2.6%20%E6%89%BF%E9%87%8D%E8%83%BD%E5%8A%9B.jpg)
 
 ### 2.7. 框架外部EVA薄膜上下拼接
 
-薄膜在框架外部通常要起到防尘的作用，推荐上面薄膜朝外压住下面薄膜的方式拼接，层叠距离大于2cm为宜。
+薄膜在框架外部通常要起到防尘的作用，推荐上面薄膜在外压住下面薄膜的方式拼接，层叠距离大于3cm为宜。
 
-1. 裁剪EVA防滑垫要求长度等于框架宽度（如果是1515铝型材，推荐增加1cm），宽度大于5cm。
+1. 裁剪EVA防滑垫要求长度等于框架外边长度（如果是1515铝型材，推荐增加0~1cm），如果需要压住下方薄膜，则推荐宽度增加3cm。
 	
 	[示例图]
 	
-2. 在两侧打孔并安装。
+2. 在两侧打孔，上面并安装。
 		
-	参考：连接铝型材步骤。
+	参考：2.3. 连接铝型材步骤。
 		
 	[示例图]
 
