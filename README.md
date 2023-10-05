@@ -11,9 +11,9 @@
 
 ![x](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/index/3dd(1).png)
 
-**[设计大纲](https://gitee.com/kukela/diy-furniture/tree/master/doc/设计大纲.md)**
+**[设计大纲](https://gitee.com/kukela/diy-furniture/blob/master/doc/设计大纲.md)**
 
-**[商品大纲](https://gitee.com/kukela/diy-furniture/tree/master/doc/商品大纲.md)**
+**[商品大纲](https://gitee.com/kukela/diy-furniture/blob/master/doc/商品大纲.md)**
 
 ## 2. 示例
 
@@ -21,7 +21,7 @@
 
 通过几个可定制模块化柜子按需实现需要的功能，有拆卸简单，美观方便等特点，适合10~35cm的柜体深度。
 
-**[详情页](https://gitee.com/kukela/diy-furniture/tree/master/example/玄关柜/玄关柜.md)**
+**[详情页](https://gitee.com/kukela/diy-furniture/blob/master/example/玄关柜/玄关柜.md)**
 
 **[介绍视频，正在制作中]()**
 
