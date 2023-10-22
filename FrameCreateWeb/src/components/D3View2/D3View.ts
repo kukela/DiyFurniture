@@ -25,8 +25,8 @@ export class D3View {
     private _tubeMeshManager = new TubeMeshManager()
 
     private _cmdType = CmdType.None
-    private _isRenderLight = false
     private _isRender = false
+    private _isRenderAndLight = true
 
     onInputTypeChange: (type: number) => void = () => { }
     onSelectMeshList?: (list: Mesh[]) => void
@@ -42,10 +42,10 @@ export class D3View {
 
             this._sceneM.refMeshList()
 
-            this._reader(true);
+            this._isRenderAndLight = true
             window.addEventListener("resize", () => {
                 engine.resize();
-                this._isRenderLight = true
+                this._isRenderAndLight = true
             });
 
             // window.addEventListener("keydown", (ev) => {
@@ -74,12 +74,12 @@ export class D3View {
     changeCameraControlType(type: CameraControlType) {
         this._arcInput.controlType = type
         this._uiSM.visibleTargetBox(type == CameraControlType.PTarget)
-        this._reader(false)
+        this._isRender = true
     }
 
     fullTarget() {
         this._sceneM.fullTarget()
-        this._reader(true);
+        this._isRenderAndLight = true
     }
 
     changeCmdType(t: CmdType) {
@@ -105,7 +105,7 @@ export class D3View {
                 break
             }
         }
-        this._reader(false)
+        this._isRender = true
     }
 
     addMesh(m: Mesh) {
@@ -115,7 +115,7 @@ export class D3View {
     delSelMesh() {
         this._sceneM.delSelMesh()
         this._selMeshList(null)
-        this._reader(true);
+        this._isRenderAndLight = true
     }
 
     private _defScene(engine: Engine | WebGPUEngine, cvs: HTMLCanvasElement) {
@@ -148,9 +148,10 @@ export class D3View {
 
         var rType = 0
         engine.runRenderLoop(() => {
-            if (arcInput.isAnim || arcInput.isChange || mGM.isRender() || this._isRenderLight) {
+            rType = 0
+            if (arcInput.isAnim || arcInput.isChange || mGM.isRender() || this._isRenderAndLight) {
                 arcInput.isChange = false
-                this._isRenderLight = false
+                this._isRenderAndLight = false
                 rType = 1
             } else if (this._isRender) {
                 this._isRender = false
@@ -180,7 +181,7 @@ export class D3View {
             if (arcInput.controlType != CameraControlType.PTarget) {
                 uiSM.visibleTargetBox(false)
             }
-            this._reader(false)
+            this._isRender = true
             this.onInputTypeChange(type)
         }
 
@@ -230,8 +231,11 @@ export class D3View {
 
     private _reader(isCalcLight: Boolean) {
         const sM = this._sceneM
+        const cam = sM.camera
         if (isCalcLight) sM.calcLight()
-        this._uiSM.changeTargetBox(sM.camera)
+        this._uiSM.changeTargetBox(cam)
+        this._groundHelper.changeGridRatio(cam)
+        this._tubeMeshManager.changeAllPosAccUnit(this._groundHelper.getPosAccUnit())
         sM.scene.render();
     }
 

@@ -4,8 +4,11 @@ import {
 import { MeshType } from '../../utils/MeshUtils';
 import Tube from './Tube';
 import Rectangle from './Rectangle';
+import { LUnitType, LUnitUtils } from "../../utils/LUnitUtils";
 
 export default class TubeUtils {
+    posAccUnit = LUnitType.CM
+
     private _scene!: Scene
     private _groundPlane!: Plane
     private _meshDefNormal = new Vector3(0, -1, 0)
@@ -87,6 +90,7 @@ export default class TubeUtils {
         return false
     }
 
+    // 平面移动
     private _datumPlaneMove(pInfo: PickingInfo | null) {
         const tube = this._tube
         const ray = pInfo?.ray
@@ -105,6 +109,7 @@ export default class TubeUtils {
             if (!distance) return
             ray!.direction.scaleToRef(distance, pP)
             pP.addInPlace(ray!.origin)
+            LUnitUtils.v2FixedUnit(pP, this.posAccUnit)
             datumPlane = this._groundPlane
         }
         this._datumPlane = datumPlane
@@ -116,6 +121,7 @@ export default class TubeUtils {
         tube.rotation = Quaternion.RotationAxis(axis, angle).toEulerAngles()
     }
 
+    // 开始从光标挤出模型
     private _startPointerExtruded(pInfo: PickingInfo | null) {
         const pP = this._tube?.position
         const datumPlane = this._datumPlane
@@ -131,6 +137,7 @@ export default class TubeUtils {
         this._extrudedPlane = Plane.FromPositionAndNormal(pP, tP);
     }
 
+    // 从光标挤出模型
     private _pointerExtruded(pInfo: PickingInfo | null) {
         const tube = this._tube
         const datumPlane = this._datumPlane

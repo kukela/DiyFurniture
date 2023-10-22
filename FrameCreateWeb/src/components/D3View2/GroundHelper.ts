@@ -1,14 +1,19 @@
 import {
-    Scene, MeshBuilder, Color3, GroundMesh
+    Scene, MeshBuilder, Color3, GroundMesh, ArcRotateCamera
 } from '@babylonjs/core';
 import { GridMaterial } from '@babylonjs/materials/Grid';
 import { MeshUtils } from '../utils/MeshUtils';
+import { LUnitType } from "../utils/LUnitUtils";
 
 export class GroundHelper {
+    gridMat!: GridMaterial;
+
+    private _tN1: number = 1
 
     create(size: number = 200, scene: Scene): GroundMesh {
         const ground = MeshBuilder.CreateGround("ground", { width: size, height: size }, scene);
         const gridMaterial = new GridMaterial("GroundMaterial", scene);
+        this.gridMat = gridMaterial
         gridMaterial.disableDepthWrite = true
         // gridMaterial.disableLighting = true
         gridMaterial.mainColor = Color3.FromHexString("#82adcd")
@@ -27,6 +32,33 @@ export class GroundHelper {
         ground.isPickable = false
         MeshUtils.freeze(ground)
         return ground
+    }
+
+    changeGridRatio(cam: ArcRotateCamera) {
+        const cd = Math.abs(cam.position.z)
+        if (cd > 4) {
+            this._tN1 = 1
+        } else if (cd > 1) {
+            this._tN1 = 0.1;
+        } else {
+            this._tN1 = 0.01;
+        }
+        if (this._tN1 == this.gridMat.gridRatio) return
+        this.gridMat.gridRatio = this._tN1;
+    }
+
+    getPosAccUnit(): LUnitType {
+        switch (this.gridMat.gridRatio) {
+            case 0.01: {
+                return LUnitType.MM
+            }
+            case 0.1: {
+                return LUnitType.CM
+            }
+            default: {
+                return LUnitType.DM
+            }
+        }
     }
 
 }

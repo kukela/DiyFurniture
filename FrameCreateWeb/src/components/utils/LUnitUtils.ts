@@ -1,3 +1,5 @@
+import { Vector3 } from "@babylonjs/core";
+
 export class LUnitUtils {
 
     static str2ValueAndUnit(t: string | null): { v: number, unit: LUnitType } | null {
@@ -56,6 +58,25 @@ export class LUnitUtils {
             return { v: v, isPercent: true }
         }
         return { v: this.valueAndUnit2Num(v, unit), isPercent: false }
+    }
+
+    static v2FixedUnit(v: Vector3, unit: LUnitType) {
+        let fN = 2
+        switch (unit) {
+            case LUnitType.MM: {
+                fN = 3
+                break
+            }
+            case LUnitType.DM: {
+                fN = 1
+                break
+            }
+            case LUnitType.M: {
+                fN = 0
+                break
+            }
+        }
+        v.set(Number(v.x.toFixed(fN)), Number(v.y.toFixed(fN)), Number(v.z.toFixed(fN)))
     }
 
 }

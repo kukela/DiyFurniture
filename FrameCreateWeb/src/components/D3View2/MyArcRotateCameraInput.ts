@@ -88,6 +88,7 @@ export class MyArcRotateCameraInput implements ICameraInput<ArcRotateCamera> {
         }
     }
 
+    // 选择mesh
     changePickingTarget(info: PickingInfo | null, isObjMesh: boolean) {
         if (this.isAnim) return
 
