@@ -60,7 +60,7 @@ export class LUnitUtils {
         return { v: this.valueAndUnit2Num(v, unit), isPercent: false }
     }
 
-    static v2FixedUnit(v: Vector3, unit: LUnitType) {
+    static v32FixedUnit(v: Vector3, unit: LUnitType) {
         let fN = 2
         switch (unit) {
             case LUnitType.MM: {
@@ -77,6 +77,15 @@ export class LUnitUtils {
             }
         }
         v.set(Number(v.x.toFixed(fN)), Number(v.y.toFixed(fN)), Number(v.z.toFixed(fN)))
+    }
+
+    static v32FixedAccPosV(v: Vector3, accPos: number) {
+        v.set(this.v2FixedAccPosV(v.x, accPos), this.v2FixedAccPosV(v.y, accPos), this.v2FixedAccPosV(v.z, accPos))
+    }
+
+    private static v2FixedAccPosV(v: number, accPos: number): number {
+        // let pow = Math.pow(10, (accPos.toString().split('.')[1] || '').length);
+        return v = Math.round((v + Number.EPSILON) / accPos) * accPos
     }
 
 }

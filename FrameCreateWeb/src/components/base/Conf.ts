@@ -1,5 +1,7 @@
 export class Conf {
 
+    public static posAcc: number = 0.1
+
     public static isWebGPURenderer(): boolean {
         return localStorage.getItem("isWebGPURenderer") != '0'
     }

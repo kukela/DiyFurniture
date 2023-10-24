@@ -61,4 +61,18 @@ export class GroundHelper {
         }
     }
 
+    getPosAcc(): number {
+        switch (this.gridMat.gridRatio) {
+            case 0.01: {
+                return 0.001
+            }
+            case 0.1: {
+                return 0.01
+            }
+            default: {
+                return 0.1
+            }
+        }
+    }
+
 }

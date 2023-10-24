@@ -1,8 +1,7 @@
 import {
-    Scene, Mesh, Vector3, PointerInfo
+    Scene, Mesh, PointerInfo
 } from '@babylonjs/core';
 import TubeUtils from './Tube/TubeUtils';
-import { LUnitType } from "../utils/LUnitUtils";
 
 export class MeshManager {
     private _scene!: Scene
@@ -36,12 +35,6 @@ export class MeshManager {
             case AddMeshType.Tube: return this._tubeUtils?.handlePointer(pi) == true
         }
         return false
-    }
-
-    changeAllPosAccUnit(ut: LUnitType) {
-        if (this._tubeUtils) {
-            this._tubeUtils.posAccUnit = ut
-        }
     }
 
 }

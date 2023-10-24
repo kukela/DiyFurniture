@@ -13,6 +13,7 @@ import { MeshUtils, MeshType } from './../utils/MeshUtils.ts'
 import { UiSpriteManager } from './UiSpriteManager.ts';
 import { MyGizmoManager } from './MyGizmoManager.ts';
 import { MeshManager as TubeMeshManager } from '../Mesh/MeshManager.ts';
+import { Conf } from '../base/Conf.ts';
 
 export class D3View {
     private _sceneM = new MySceneManager();
@@ -65,6 +66,7 @@ export class D3View {
             alert("init error: " + err)
             initBC && initBC(null);
         })
+
     }
 
     getScene(): Scene {
@@ -199,6 +201,8 @@ export class D3View {
             } else {
                 this._selMeshList(null)
             }
+            //测试
+            console.log("" + mesh?.position)
         }
 
         arcInput.onMSel = (sP, eP) => {
@@ -235,7 +239,7 @@ export class D3View {
         if (isCalcLight) sM.calcLight()
         this._uiSM.changeTargetBox(cam)
         this._groundHelper.changeGridRatio(cam)
-        this._tubeMeshManager.changeAllPosAccUnit(this._groundHelper.getPosAccUnit())
+        Conf.posAcc = this._groundHelper.getPosAcc()
         sM.scene.render();
     }
 

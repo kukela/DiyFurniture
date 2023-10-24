@@ -2,7 +2,10 @@ import {
     Scene, UtilityLayerRenderer, GizmoManager, Color3, Mesh, MeshBuilder
 } from '@babylonjs/core';
 import { MeshUtils } from '../utils/MeshUtils';
+import { Conf } from '../base/Conf';
+import { LUnitUtils } from '../utils/LUnitUtils';
 
+// 位移、旋转、缩放 控制器
 export class MyGizmoManager {
     private _gizmoManager!: GizmoManager
     private _isDrag = false
@@ -34,6 +37,10 @@ export class MyGizmoManager {
             posGizom.yPlaneGizmo.coloredMaterial.diffuseColor = yColor
             posGizom.zPlaneGizmo.coloredMaterial.diffuseColor = zColor
 
+            posGizom.onDragStartObservable.add(() => {
+                posGizom.snapDistance = Conf.posAcc
+            })
+
             const gList = [
                 posGizom.xGizmo, posGizom.yGizmo, posGizom.zGizmo, posGizom.xPlaneGizmo, posGizom.yPlaneGizmo, posGizom.zPlaneGizmo
             ]
@@ -41,10 +48,13 @@ export class MyGizmoManager {
                 g.dragBehavior.onDragStartObservable.add(() => {
                     this._isDrag = true
                 })
-                // g.dragBehavior.onDragObservable.add(() => {
+                // g.dragBehavior.onDragObservable.add((ev) => {
                 // })
                 g.dragBehavior.onDragEndObservable.add(() => {
                     this._isDrag = false
+                    this._aMeshList.forEach((m) => {
+                        LUnitUtils.v32FixedAccPosV(m.position, Conf.posAcc)
+                    });
                 })
             });
         }
@@ -54,6 +64,8 @@ export class MyGizmoManager {
             rGizom.xGizmo.coloredMaterial.diffuseColor = xColor
             rGizom.yGizmo.coloredMaterial.diffuseColor = yColor
             rGizom.zGizmo.coloredMaterial.diffuseColor = zColor
+
+            rGizom.snapDistance = Math.PI / 180 * 5
 
             const gList = [
                 rGizom.xGizmo, rGizom.yGizmo, rGizom.zGizmo

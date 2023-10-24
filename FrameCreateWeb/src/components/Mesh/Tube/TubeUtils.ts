@@ -4,11 +4,10 @@ import {
 import { MeshType } from '../../utils/MeshUtils';
 import Tube from './Tube';
 import Rectangle from './Rectangle';
-import { LUnitType, LUnitUtils } from "../../utils/LUnitUtils";
+import { LUnitUtils } from "../../utils/LUnitUtils";
+import { Conf } from "../../base/Conf";
 
 export default class TubeUtils {
-    posAccUnit = LUnitType.CM
-
     private _scene!: Scene
     private _groundPlane!: Plane
     private _meshDefNormal = new Vector3(0, -1, 0)
@@ -109,7 +108,7 @@ export default class TubeUtils {
             if (!distance) return
             ray!.direction.scaleToRef(distance, pP)
             pP.addInPlace(ray!.origin)
-            LUnitUtils.v2FixedUnit(pP, this.posAccUnit)
+            LUnitUtils.v32FixedAccPosV(pP, Conf.posAcc)
             datumPlane = this._groundPlane
         }
         this._datumPlane = datumPlane
