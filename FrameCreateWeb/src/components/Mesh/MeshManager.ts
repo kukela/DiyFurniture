@@ -2,6 +2,8 @@ import {
     Scene, Mesh, PointerInfo
 } from '@babylonjs/core';
 import TubeUtils from './Tube/TubeUtils';
+import { MeshType } from '../utils/MeshUtils';
+import Tube from './Tube/Tube';
 
 export class MeshManager {
     private _scene!: Scene
@@ -14,20 +16,24 @@ export class MeshManager {
         this._scene = scene
     }
 
-    addTubeMesh(json: string | null) {
+    startAddTubeMesh(json: any) {
+        this.initTubeUtils()
         this._addMeshType = AddMeshType.Tube
-        const u = new TubeUtils(this._scene)
-        u.addMesh(json)
-        u.onAddMesh = (m) => { if (this.onAddMesh) this.onAddMesh(m) }
-        this._tubeUtils = u
+        this._tubeUtils!.startAddMesh(json)
     }
 
-    clearAddMesh() {
+    clearStartAddMesh() {
         if (this._tubeUtils) {
-            this._tubeUtils.clearAddMesh()
-            this._tubeUtils = null
+            this._tubeUtils.clearStartAddMesh()
         }
-        this._addMeshType = AddMeshType.None
+        // this._addMeshType = AddMeshType.None
+    }
+
+    addTestTube(): Tube {
+        this.initTubeUtils()
+        const json = { length: 2 }
+        const tube = this._tubeUtils!.addTube(MeshType.TubeRectangle, json)
+        return tube
     }
 
     handlePointer(pi: PointerInfo): boolean {
@@ -35,6 +41,15 @@ export class MeshManager {
             case AddMeshType.Tube: return this._tubeUtils?.handlePointer(pi) == true
         }
         return false
+    }
+
+    private initTubeUtils() {
+        if (this._tubeUtils == null) {
+            this._tubeUtils = new TubeUtils(this._scene)
+        } else {
+            this._tubeUtils.clearStartAddMesh()
+        }
+        this._tubeUtils.onAddMesh = (m) => { if (this.onAddMesh) this.onAddMesh(m) }
     }
 
 }

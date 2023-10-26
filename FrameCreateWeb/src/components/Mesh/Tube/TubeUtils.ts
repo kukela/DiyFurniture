@@ -42,17 +42,17 @@ export default class TubeUtils {
         return tube
     }
 
-    addMesh(conf: string | null) {
+    startAddMesh(conf: any) {
         this._extrudedPlane = null
         this._datumPlane = null
         const tube = TubeUtils.type2Tube(this._scene, MeshType.TubeRectangle)
         tube.setConf(conf)
-        tube.toPlaneMesh()
+        tube.toShapeMesh()
         this._hMesh(tube)
         this._tube = tube
     }
 
-    clearAddMesh() {
+    clearStartAddMesh() {
         this._extrudedPlane = null
         this._datumPlane = null
         if (this._tube) {
@@ -71,7 +71,7 @@ export default class TubeUtils {
                 } else {
                     const addJson = this._tube?.metadata
                     this._addExtrudedMesh()
-                    this.addMesh(addJson)
+                    this.startAddMesh(addJson)
                     this._datumPlaneMove(pickInfo)
                 }
                 return true
@@ -89,6 +89,13 @@ export default class TubeUtils {
         return false
     }
 
+    addTube(type: MeshType, conf: any): Tube {
+        const tube = TubeUtils.type2Tube(this._scene, type)
+        tube.conf2Mesh(conf)
+        tube.rotation = Quaternion.RotationAxis(new Vector3(-1, 0, 0), Math.PI / 2).toEulerAngles()
+        return tube
+    }
+
     // 平面移动
     private _datumPlaneMove(pInfo: PickingInfo | null) {
         const tube = this._tube
@@ -98,12 +105,12 @@ export default class TubeUtils {
         const pickMesh = pInfo.pickedMesh
         const pickPoint = pInfo.pickedPoint
         var datumPlane
-        if (pickMesh?.isPickable && pickPoint) {
-            pP.copyFrom(pickPoint)
+        if (pickMesh?.isPickable && pickPoint) { // 在mesh上移动
             datumPlane = Plane.FromPositionAndNormal(pickMesh.getFacetPosition(pInfo.faceId), pickMesh.getFacetNormal(pInfo.faceId))
+            pP.copyFrom(pickPoint)
             // console.log(pickMesh.getFacetLocalPartitioning())
             // console.log(pickMesh.getFacetNormal(pInfo.faceId))
-        } else {
+        } else { // 在地面上移动
             const distance = ray?.intersectsPlane(this._groundPlane);
             if (!distance) return
             ray!.direction.scaleToRef(distance, pP)
@@ -156,7 +163,7 @@ export default class TubeUtils {
         const tube = this._tube
         if (!tube) return
         this._hMesh(tube, false)
-        tube.toAddMesh(this._extrudedH)
+        tube.toExtrudedMesh(this._extrudedH)
         this._tube = null
         if (this.onAddMesh) this.onAddMesh(tube)
     }

@@ -92,7 +92,7 @@ export class D3View {
                 break
             }
             case CmdType.Add: {
-                this._tubeMeshManager.clearAddMesh()
+                this._tubeMeshManager.clearStartAddMesh()
                 break
             }
         }
@@ -103,7 +103,7 @@ export class D3View {
                 break
             }
             case CmdType.Add: {
-                this._tubeMeshManager.addTubeMesh(null)
+                this._tubeMeshManager.startAddTubeMesh(null)
                 break
             }
         }
@@ -268,11 +268,8 @@ export class D3View {
         oct.state = MeshType.Obj
         MeshUtils.showFacetNormals(scene, oct)
 
-        const box = MeshBuilder.CreateBox("box", { size: 0.1 }, scene);
-        // const sM = new StandardMaterial("boxS", scene)
-        // box.material = sM
-        box.state = MeshType.Obj
-        box.position.set(2, 0, 0)
+        const tTube = this._tubeMeshManager.addTestTube()
+        tTube.position.set(2, 0, 0)
 
         // const gm = 3
         // for (var i = 0; i < 10 * gm; i++) {
