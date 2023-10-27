@@ -5,11 +5,11 @@
 
 目前我使用的是免费的2D设计软件[Luncay](https://igoutu.cn/lunacy)，这个软件是跨平台的。[Luncay英文官网](https://icons8.com/lunacy)
 
-![x](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/index/dd.jpg)
+![x](img/index/dd.jpg)
 
 3D设计软件正在开发中。
 
-![x](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/index/fc.jpg)
+![x](img/index/fc.jpg)
 
 **[设计大纲](https://gitee.com/kukela/diy-furniture/blob/master/doc/设计大纲.md)**
 
@@ -25,4 +25,4 @@
 
 **[介绍视频，正在制作中]()**
 
-![x](https://kukela-images.oss-cn-shanghai.aliyuncs.com/DiyFurniture/%E7%8E%84%E5%85%B3%E6%9F%9C/ZQ1.png)
+![x](img/玄关柜/ZQ1.png)
