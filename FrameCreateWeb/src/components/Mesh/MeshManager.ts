@@ -33,6 +33,7 @@ export class MeshManager {
         this.initTubeUtils()
         const json = { length: 2 }
         const tube = this._tubeUtils!.addTube(MeshType.TubeRectangle, json)
+        tube.name = "test_tube_001"
         return tube
     }
 

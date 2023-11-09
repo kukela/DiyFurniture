@@ -1,6 +1,6 @@
 import {
     WebGPUEngine, Engine, Scene, Mesh, UtilityLayerRenderer, PointerInfo, EventState, PointerEventTypes,
-    MeshBuilder, StandardMaterial
+    MeshBuilder, StandardMaterial, Color3, Quaternion
 } from '@babylonjs/core';
 // import { Inspector } from '@babylonjs/inspector';
 import { EngineUtils } from '../utils/EngineUtils.ts';
@@ -9,11 +9,14 @@ import { MySceneManager } from './MySceneManager.ts';
 import { GroundHelper } from './GroundHelper.ts'
 import { AxesHelper } from './AxesHelper.ts'
 import { MyHighlightLayout } from './MyHighlightLayout.ts'
-import { MeshUtils, MeshType } from './../utils/MeshUtils.ts'
+import { MeshUtils } from './../utils/MeshUtils.ts'
 import { UiSpriteManager } from './UiSpriteManager.ts';
 import { MyGizmoManager } from './MyGizmoManager.ts';
 import { MeshManager as TubeMeshManager } from '../Mesh/MeshManager.ts';
 import { Conf } from '../base/Conf.ts';
+import Tube from '../Mesh/Tube/Tube.ts';
+import { VectorUtils } from '../utils/VectorUtils.ts';
+import Temp from '../Sub/Temp.ts';
 
 export class D3View {
     private _sceneM = new MySceneManager();
@@ -28,6 +31,9 @@ export class D3View {
     private _cmdType = CmdType.None
     private _isRender = false
     private _isRenderAndLight = true
+
+    private _testTube?: Tube
+    private _testMesh?: Mesh
 
     onInputTypeChange: (type: number) => void = () => { }
     onSelectMeshList?: (list: Mesh[]) => void
@@ -145,6 +151,9 @@ export class D3View {
         tmM.create(scene)
         tmM.onAddMesh = (m: Mesh) => {
             this.addMesh(m)
+            if (m instanceof Tube) {
+                MeshUtils.showTubeAllAds(scene, m)
+            }
             // MeshUtils.showFacetNormals(scene, m)
         }
 
@@ -236,6 +245,15 @@ export class D3View {
     private _reader(isCalcLight: Boolean) {
         const sM = this._sceneM
         const cam = sM.camera
+
+        if (this._testTube && this._testMesh) {
+            let p = this._testTube.position
+            let q = Quaternion.FromEulerVector(this._testTube.rotation)
+            let vp = this._testMesh.position
+            vp.copyFrom(Temp.tV1)
+            VectorUtils.v3OffsetInPlace(vp, p, q)
+        }
+
         if (isCalcLight) sM.calcLight()
         this._uiSM.changeTargetBox(cam)
         this._groundHelper.changeGridRatio(cam)
@@ -262,14 +280,22 @@ export class D3View {
     private _initTest() {
         const scene = this._sceneM.scene
 
-        const oct = MeshBuilder.CreatePolyhedron("oct", { size: 0.5, type: 3 }, scene)
-        // const oct = MeshBuilder.CreateCylinder("oct", { height: 3, diameterTop: 1, diameterBottom: 1, tessellation: 6 }, scene)
-        oct.rotation.x = Math.PI / 2
-        oct.state = MeshType.Obj
-        MeshUtils.showFacetNormals(scene, oct)
+        // const oct = MeshBuilder.CreatePolyhedron("oct", { size: 0.5, type: 3 }, scene)
+        // // const oct = MeshBuilder.CreateCylinder("oct", { height: 3, diameterTop: 1, diameterBottom: 1, tessellation: 6 }, scene)
+        // oct.rotation.x = Math.PI / 2
+        // oct.state = MeshType.Obj
+        // MeshUtils.showFacetNormals(scene, oct)
 
         const tTube = this._tubeMeshManager.addTestTube()
-        tTube.position.set(2, 0, 0)
+        // tTube.material = new StandardMaterial("");
+        // tTube.material.wireframe = true;
+        tTube.position.set(2, -0.5, 0.2)
+        MeshUtils.showTubeAllAds(scene, tTube)
+        this._testTube = tTube
+
+        let box = MeshBuilder.CreateBox("tiled box", { size: 0.05 }, scene)
+        box.isPickable = false
+        this._testMesh = box
 
         // const gm = 3
         // for (var i = 0; i < 10 * gm; i++) {

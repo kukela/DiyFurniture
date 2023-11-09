@@ -80,6 +80,7 @@ export class MySceneManager {
         }
     }
 
+    // 区域选择网格数组
     region2MeshList(sP: Vector2, eP: Vector2): Mesh[] {
         return MeshUtils.targetInList(sP, eP, this.camera, this.meshList)
     }

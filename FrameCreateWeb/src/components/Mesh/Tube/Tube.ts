@@ -1,6 +1,9 @@
-import { Mesh } from '@babylonjs/core';
+import { Mesh, Vector2, Vector3, Path3D, Quaternion, PickingInfo, Plane } from '@babylonjs/core';
 import { LUnitUtils } from '../../utils/LUnitUtils';
 import { NullUtils } from '../../utils/NullUtils';
+import Ads from '../../Sub/Ads';
+import Temp from '../../Sub/Temp';
+import { VectorUtils } from '../../utils/VectorUtils';
 
 export default abstract class Tube extends Mesh {
     // config
@@ -16,13 +19,18 @@ export default abstract class Tube extends Mesh {
 
     protected length: number = this.minLength
 
+    // 吸附辅助相关
+    // protected _facetsDeAdsPathIndex?: number[]
+    protected _adsList: Ads[] = []
+
     // 生成形状转mesh
     abstract toShapeMesh(): void
 
     // 从形状转挤出mesh
     abstract toExtrudedMesh(l: number): void
 
-    abstract getOtherSaveJson(): Object
+    // 获取其他保存起来的数据
+    protected abstract getOtherSaveJson(): Object
 
     setConfStr(conf: string) {
         let json: any = {}
@@ -76,6 +84,59 @@ export default abstract class Tube extends Mesh {
         this.toExtrudedMesh(this.length)
     }
 
+    // 生成吸附辅助线数据
+    genAdsData(): void {
+        this.updateFacetData()
+        this._adsList = []
+        // for (let i = 0; i < this.facetNb; i++) {
+        // }
+    }
+
+    // 点吸附到辅助线上
+    pickAds(pInfo: PickingInfo, point: Vector3): { datumPlane: Plane } | null {
+        const pickPoint = pInfo.pickedPoint
+        if (pickPoint == null) return null
+
+        let v1 = Temp.tV1.copyFrom(pickPoint)
+        const p = this.position
+        const q = Quaternion.FromEulerVector(this.rotation)
+        VectorUtils.v3ROffsetInPlace(v1, p, q)
+
+        let maxDis = Number.MAX_VALUE
+        let dis = 0
+        let adsIndex = -1
+        this._adsList.forEach((ads, i) => {
+            dis = ads.signedDistanceTo(v1)
+            if (dis < 0) return
+            if (dis < maxDis) {
+                maxDis = dis
+                adsIndex = i
+            }
+        });
+        if (adsIndex == -1) return null
+        let sAds = this._adsList[adsIndex]
+
+        // console.log("-- " + v1)
+        let path = sAds.getPathList()[0]
+        // console.log("- " +)
+
+        point.copyFrom(path.getPointAt(path.getClosestPositionTo(v1)))
+        VectorUtils.v3OffsetInPlace(point, p, q)
+
+        // console.log(this._adsList[0].signedDistanceTo(Temp.tV1))
+        // console.log(v1)
+        // console.log("----- " + sAds)
+        // path.
+        let tn = sAds.getPlaneNormal()!
+        tn.rotateByQuaternionAroundPointToRef(q, Vector3.Zero(), tn)
+
+        return { datumPlane: Plane.FromPositionAndNormal(point, tn) }
+    }
+
+    getAdsList(): Ads[] {
+        return this._adsList
+    }
+
     getSaveJson(): Object {
         return {
             ...{
@@ -106,11 +167,32 @@ export default abstract class Tube extends Mesh {
             oX -= this.shapeCpX
         }
         if (this.isShapeCpYPercent) {
-            oY = -this.shapeH * this.shapeCpY * 0.01
+            oY -= this.shapeH * this.shapeCpY * 0.01
         } else {
             oY -= this.shapeCpY
         }
         return { x: oX, y: oY }
+    }
+
+    protected _genAdsPathList(pointList: Vector2[], normalList: Vector2[]) {
+        for (let i = 0; i < pointList.length; i++) {
+            const p2 = pointList[i]
+            let s = new Vector3(p2.x, 0, p2.y)
+            let e = new Vector3(p2.x, -this.length, p2.y)
+            const n2 = normalList[i]
+            let n = new Vector3(n2.x, 0, n2.y)
+            this._adsList.push(Ads.initWithPathList([new Path3D([s, e], n)]))
+        }
+    }
+
+    protected _genTBAdsPointList(pointList: Vector2[]) {
+        for (let i = 0; i < pointList.length; i++) {
+            const p2 = pointList[i];
+            let s = new Vector3(p2.x, 0, p2.y)
+            let e = new Vector3(p2.x, -this.length, p2.y)
+            this._adsList.push(Ads.initWithPointList([s]))
+            this._adsList.push(Ads.initWithPointList([e]))
+        }
     }
 
 }

@@ -34,7 +34,7 @@ export default class TubeUtils {
             //     break
             // }
             default: {
-                tube = new Rectangle("tube_01")
+                tube = new Rectangle("Rectangle_001", _scene)
                 break
             }
         }
@@ -70,7 +70,7 @@ export default class TubeUtils {
                     this._startPointerExtruded(pickInfo)
                 } else {
                     const addJson = this._tube?.metadata
-                    this._addExtrudedMesh()
+                    this._addMesh()
                     this.startAddMesh(addJson)
                     this._datumPlaneMove(pickInfo)
                 }
@@ -93,6 +93,8 @@ export default class TubeUtils {
         const tube = TubeUtils.type2Tube(this._scene, type)
         tube.conf2Mesh(conf)
         tube.rotation = Quaternion.RotationAxis(new Vector3(-1, 0, 0), Math.PI / 2).toEulerAngles()
+        // tube.computeWorldMatrix(true)
+        tube.genAdsData()
         return tube
     }
 
@@ -104,10 +106,19 @@ export default class TubeUtils {
         const pP = tube.position
         const pickMesh = pInfo.pickedMesh
         const pickPoint = pInfo.pickedPoint
-        var datumPlane
+        var datumPlane: Plane | null = null
         if (pickMesh?.isPickable && pickPoint) { // 在mesh上移动
-            datumPlane = Plane.FromPositionAndNormal(pickMesh.getFacetPosition(pInfo.faceId), pickMesh.getFacetNormal(pInfo.faceId))
-            pP.copyFrom(pickPoint)
+            if (pickMesh instanceof Tube) {
+                const pickArcM = pickMesh.pickAds(pInfo, pP)
+                if (pickArcM) {
+                    datumPlane = pickArcM.datumPlane
+                }
+            }
+            if (datumPlane == null) {
+                datumPlane = Plane.FromPositionAndNormal(pickMesh.getFacetPosition(pInfo.faceId), pickMesh.getFacetNormal(pInfo.faceId))
+                pP.copyFrom(pickPoint)
+                console.log("gen datumPlane err")
+            }
             // console.log(pickMesh.getFacetLocalPartitioning())
             // console.log(pickMesh.getFacetNormal(pInfo.faceId))
         } else { // 在地面上移动
@@ -119,6 +130,7 @@ export default class TubeUtils {
             datumPlane = this._groundPlane
         }
         this._datumPlane = datumPlane
+        if (datumPlane == null) return
 
         // aMesh.alignWithNormal(datumPlane.normal.negate())
         // aMesh.rotation.x -= Math.PI / 2
@@ -159,11 +171,13 @@ export default class TubeUtils {
         tube.enableEdgesRendering();
     }
 
-    private _addExtrudedMesh() {
+    private _addMesh() {
         const tube = this._tube
         if (!tube) return
         this._hMesh(tube, false)
         tube.toExtrudedMesh(this._extrudedH)
+        tube.name = "tube_001"
+        tube.genAdsData()
         this._tube = null
         if (this.onAddMesh) this.onAddMesh(tube)
     }

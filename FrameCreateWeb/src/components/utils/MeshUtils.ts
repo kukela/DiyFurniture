@@ -1,6 +1,7 @@
 import {
-    AbstractMesh, Mesh, Vector3, Vector2, Matrix, Camera, MeshBuilder, Color3, Scene,
+    AbstractMesh, Mesh, Vector3, Vector2, Matrix, Camera, MeshBuilder, Color3, Scene, LinesMesh
 } from "@babylonjs/core";
+import Tube from "../Mesh/Tube/Tube";
 
 export class MeshUtils {
 
@@ -15,6 +16,7 @@ export class MeshUtils {
         }
     }
 
+    // 在摄像头视图中选择mesh
     static targetInList(sP: Vector2, eP: Vector2, camera: Camera, mList: Mesh[]): Mesh[] {
         const scene = camera.getScene()
         const vp = camera.viewport.toGlobal(
@@ -45,6 +47,7 @@ export class MeshUtils {
         return m?.state?.indexOf(MeshType.Tube) == 0
     }
 
+    // 计算mesh中心点
     static calcMeshListCenterInPlace(mList: Mesh[], cP: Vector3) {
         cP.setAll(0)
         mList.forEach(m => {
@@ -53,20 +56,45 @@ export class MeshUtils {
         cP.divideInPlace(Vector3.Zero().setAll(mList.length))
     }
 
+    // 显示mesh所有面的法线
     static showFacetNormals(s: Scene, m: Mesh) {
         m.updateFacetData();
-        var positions = m.getFacetLocalPositions();
-        var normals = m.getFacetLocalNormals();
-        var lines = [];
-        for (var i = 0; i < positions.length; i++) {
-            var line = [positions[i], positions[i].add(normals[i])];
+        let positions = m.getFacetLocalPositions();
+        let normals = m.getFacetLocalNormals();
+        let lines = [];
+        for (let i = 0; i < positions.length; i++) {
+            let line = [positions[i], positions[i].add(normals[i])];
             lines.push(line);
         }
-        var lineSystem = MeshBuilder.CreateLineSystem("ls", { lines: lines }, s);
-        lineSystem.color = Color3.Green();
+        this.createMeshLineSystem(s, m, lines).color = Color3.Green();
+    }
+
+    // 显示mesh的ads
+    static showTubeAllAds(s: Scene, m: Tube) {
+        let lines: Vector3[][] = [];
+        let nLiens: Vector3[][] = [];
+        m.getAdsList().forEach(ads => {
+            ads.getPathList().forEach(path => {
+                let pathList = path.path
+                lines.push(pathList)
+                path.getNormals().forEach((n, i) => {
+                    let p = pathList[i]
+                    let nn = n.multiplyByFloats(0.3, 0.3, 0.3).addInPlace(p)
+                    nLiens.push([p, nn])
+                });
+            });
+        });
+        this.createMeshLineSystem(s, m, lines).color = Color3.Red();
+        this.createMeshLineSystem(s, m, nLiens).color = Color3.Green();
+    }
+
+    // 添加线条系统
+    static createMeshLineSystem(s: Scene, m: Mesh, lines: Vector3[][]): LinesMesh {
+        let lineSystem = MeshBuilder.CreateLineSystem(m.name + "_ls", { lines: lines }, s);
         lineSystem.isPickable = false
         lineSystem.rotation = m.rotation
         lineSystem.position = m.position
+        return lineSystem
     }
 
 }
