@@ -83,9 +83,10 @@ export class LUnitUtils {
         v.set(this.v2FixedAccPosV(v.x, accPos), this.v2FixedAccPosV(v.y, accPos), this.v2FixedAccPosV(v.z, accPos))
     }
 
-    private static v2FixedAccPosV(v: number, accPos: number): number {
+    static v2FixedAccPosV(v: number, accPos: number): number {
         // let pow = Math.pow(10, (accPos.toString().split('.')[1] || '').length);
-        return v = Math.round((v + Number.EPSILON) / accPos) * accPos
+        // return v = Math.round((v + Number.EPSILON) / accPos) * accPos
+        return v = Math.round(v / accPos) * accPos
     }
 
 }

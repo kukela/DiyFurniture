@@ -17,7 +17,7 @@ export default abstract class Tube extends Mesh {
     shapeCpY: number = 50
     isShapeCpYPercent: boolean = true
 
-    protected length: number = this.minLength
+    length: number = this.minLength
 
     // 吸附辅助相关
     // protected _facetsDeAdsPathIndex?: number[]
@@ -126,7 +126,6 @@ export default abstract class Tube extends Mesh {
         // console.log(this._adsList[0].signedDistanceTo(Temp.tV1))
         // console.log(v1)
         // console.log("----- " + sAds)
-        // path.
         let tn = sAds.getPlaneNormal()!
         tn.rotateByQuaternionAroundPointToRef(q, Vector3.Zero(), tn)
 

@@ -33,7 +33,7 @@ export class D3View {
     private _isRenderAndLight = true
 
     private _testTube?: Tube
-    private _testMesh?: Mesh
+    private _testBox?: Mesh
 
     onInputTypeChange: (type: number) => void = () => { }
     onSelectMeshList?: (list: Mesh[]) => void
@@ -246,10 +246,10 @@ export class D3View {
         const sM = this._sceneM
         const cam = sM.camera
 
-        if (this._testTube && this._testMesh) {
+        if (this._testTube && this._testBox) {
             let p = this._testTube.position
             let q = Quaternion.FromEulerVector(this._testTube.rotation)
-            let vp = this._testMesh.position
+            let vp = this._testBox.position
             vp.copyFrom(Temp.tV1)
             VectorUtils.v3OffsetInPlace(vp, p, q)
         }
@@ -295,7 +295,7 @@ export class D3View {
 
         let box = MeshBuilder.CreateBox("tiled box", { size: 0.05 }, scene)
         box.isPickable = false
-        this._testMesh = box
+        this._testBox = box
 
         // const gm = 3
         // for (var i = 0; i < 10 * gm; i++) {

@@ -166,7 +166,8 @@ export default class TubeUtils {
         const tP = this._tmpVector3_1
         ray!.direction.scaleToRef(distance, tP)
         tP.addInPlace(ray!.origin)
-        this._extrudedH = datumPlane.signedDistanceTo(tP)
+        let eH = datumPlane.signedDistanceTo(tP)
+        this._extrudedH = LUnitUtils.v2FixedAccPosV(eH, Conf.posAcc)
         tube.toExtrudedMesh(this._extrudedH)
         tube.enableEdgesRendering();
     }
@@ -177,6 +178,7 @@ export default class TubeUtils {
         this._hMesh(tube, false)
         tube.toExtrudedMesh(this._extrudedH)
         tube.name = "tube_001"
+        tube.length = this._extrudedH
         tube.genAdsData()
         this._tube = null
         if (this.onAddMesh) this.onAddMesh(tube)
