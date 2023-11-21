@@ -32,7 +32,7 @@ export class D3View {
     private _isRender = false
     private _isRenderAndLight = true
 
-    private _testTube?: Tube
+    private _hTube?: Tube
     private _testBox?: Mesh
 
     onInputTypeChange: (type: number) => void = () => { }
@@ -246,9 +246,9 @@ export class D3View {
         const sM = this._sceneM
         const cam = sM.camera
 
-        if (this._testTube && this._testBox) {
-            let p = this._testTube.position
-            let q = Quaternion.FromEulerVector(this._testTube.rotation)
+        if (this._hTube && this._testBox) {
+            let p = this._hTube.position
+            let q = Quaternion.FromEulerVector(this._hTube.rotation)
             let vp = this._testBox.position
             vp.copyFrom(Temp.tV1)
             VectorUtils.v3OffsetInPlace(vp, p, q)
@@ -291,7 +291,7 @@ export class D3View {
         // tTube.material.wireframe = true;
         tTube.position.set(2, -0.5, 0.2)
         MeshUtils.showTubeAllAds(scene, tTube)
-        this._testTube = tTube
+        this._hTube = tTube
 
         let box = MeshBuilder.CreateBox("tiled box", { size: 0.05 }, scene)
         box.isPickable = false

@@ -108,14 +108,15 @@ export default class TubeUtils {
         const pickPoint = pInfo.pickedPoint
         var datumPlane: Plane | null = null
         if (pickMesh?.isPickable && pickPoint) { // 在mesh上移动
+            const pickNormal = pickMesh.getFacetNormal(pInfo.faceId)
             if (pickMesh instanceof Tube) {
-                const pickArcM = pickMesh.pickAds(pInfo, pP)
+                const pickArcM = pickMesh.pickAds(pInfo, pP, pickNormal)
                 if (pickArcM) {
                     datumPlane = pickArcM.datumPlane
                 }
             }
             if (datumPlane == null) {
-                datumPlane = Plane.FromPositionAndNormal(pickMesh.getFacetPosition(pInfo.faceId), pickMesh.getFacetNormal(pInfo.faceId))
+                datumPlane = Plane.FromPositionAndNormal(pickMesh.getFacetPosition(pInfo.faceId), pickNormal)
                 pP.copyFrom(pickPoint)
                 console.log("gen datumPlane err")
             }

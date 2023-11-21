@@ -93,7 +93,7 @@ export default abstract class Tube extends Mesh {
     }
 
     // 点吸附到辅助线上
-    pickAds(pInfo: PickingInfo, point: Vector3): { datumPlane: Plane } | null {
+    pickAds(pInfo: PickingInfo, point: Vector3, normal: Vector3): { datumPlane: Plane } | null {
         const pickPoint = pInfo.pickedPoint
         if (pickPoint == null) return null
 
@@ -102,14 +102,17 @@ export default abstract class Tube extends Mesh {
         const q = Quaternion.FromEulerVector(this.rotation)
         VectorUtils.v3ROffsetInPlace(v1, p, q)
 
-        let maxDis = Number.MAX_VALUE
+        let minDis = Number.MAX_VALUE
         let dis = 0
         let adsIndex = -1
+        let nN = normal.clone()
+        nN.rotateByQuaternionToRef(q.invert(), nN)
         this._adsList.forEach((ads, i) => {
+            if (!ads.isNormalDirComp(nN)) return
             dis = ads.signedDistanceTo(v1)
             if (dis < 0) return
-            if (dis < maxDis) {
-                maxDis = dis
+            if (dis < minDis) {
+                minDis = dis
                 adsIndex = i
             }
         });
@@ -118,7 +121,7 @@ export default abstract class Tube extends Mesh {
 
         // console.log("-- " + v1)
         let path = sAds.getPathList()[0]
-        // console.log("- " +)
+        // console.log("- " + this.name)
 
         point.copyFrom(path.getPointAt(path.getClosestPositionTo(v1)))
         VectorUtils.v3OffsetInPlace(point, p, q)
@@ -127,7 +130,7 @@ export default abstract class Tube extends Mesh {
         // console.log(v1)
         // console.log("----- " + sAds)
         let tn = sAds.getPlaneNormal()!
-        tn.rotateByQuaternionAroundPointToRef(q, Vector3.Zero(), tn)
+        tn.rotateByQuaternionToRef(q, tn)
 
         return { datumPlane: Plane.FromPositionAndNormal(point, tn) }
     }
@@ -185,13 +188,14 @@ export default abstract class Tube extends Mesh {
     }
 
     protected _genTBAdsPointList(pointList: Vector2[]) {
-        for (let i = 0; i < pointList.length; i++) {
-            const p2 = pointList[i];
-            let s = new Vector3(p2.x, 0, p2.y)
-            let e = new Vector3(p2.x, -this.length, p2.y)
-            this._adsList.push(Ads.initWithPointList([s]))
-            this._adsList.push(Ads.initWithPointList([e]))
-        }
+        let tList: Vector3[] = []
+        let bList: Vector3[] = []
+        pointList.forEach(p2 => {
+            tList.push(new Vector3(p2.x, -this.length, p2.y))
+            bList.push(new Vector3(p2.x, 0, p2.y))
+        });
+        this._adsList.push(Ads.initWithPointList(tList, new Vector3(0, -1, 0)))
+        this._adsList.push(Ads.initWithPointList(bList, new Vector3(0, 1, 0)))
     }
 
 }

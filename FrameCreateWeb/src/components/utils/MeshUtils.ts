@@ -74,15 +74,21 @@ export class MeshUtils {
         let lines: Vector3[][] = [];
         let nLiens: Vector3[][] = [];
         m.getAdsList().forEach(ads => {
-            ads.getPathList().forEach(path => {
-                let pathList = path.path
-                lines.push(pathList)
-                path.getNormals().forEach((n, i) => {
-                    let p = pathList[i]
-                    let nn = n.multiplyByFloats(0.3, 0.3, 0.3).addInPlace(p)
-                    nLiens.push([p, nn])
+            if (ads.getType() == 1) {
+                ads.getPathList().forEach(path => {
+                    let pathList = path.path
+                    lines.push(pathList)
+                    path.getNormals().forEach((n, i) => {
+                        let p = pathList[i]
+                        let nn = n.multiplyByFloats(0.3, 0.3, 0.3).addInPlace(p)
+                        nLiens.push([p, nn])
+                    });
                 });
-            });
+            } else {
+                ads.getPointList().forEach(point => {
+
+                });
+            }
         });
         this.createMeshLineSystem(s, m, lines).color = Color3.Red();
         this.createMeshLineSystem(s, m, nLiens).color = Color3.Green();
