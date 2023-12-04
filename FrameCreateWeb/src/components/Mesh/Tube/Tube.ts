@@ -19,8 +19,7 @@ export default abstract class Tube extends Mesh {
 
     length: number = this.minLength
 
-    // 吸附辅助相关
-    // protected _facetsDeAdsPathIndex?: number[]
+    // 所有的可吸附对象数组
     protected _adsList: Ads[] = []
 
     // 生成形状转mesh
@@ -88,8 +87,6 @@ export default abstract class Tube extends Mesh {
     genAdsData(): void {
         this.updateFacetData()
         this._adsList = []
-        // for (let i = 0; i < this.facetNb; i++) {
-        // }
     }
 
     // 点吸附到辅助线上
@@ -118,20 +115,36 @@ export default abstract class Tube extends Mesh {
         });
         if (adsIndex == -1) return null
         let sAds = this._adsList[adsIndex]
+        switch (sAds.getType()) {
+            case 0: {
+                minDis = Number.MAX_VALUE
+                let pIndex = -1
+                let pList = sAds.getPointList()
+                pList.forEach((p, i) => {
+                    dis = Math.abs(Vector3.Distance(v1, p))
+                    if (dis < minDis) {
+                        minDis = dis
+                        pIndex = i
+                    }
+                });
+                if (pIndex == -1) {
+                    point.copyFrom(v1)
+                } else {
+                    point.copyFrom(pList[pIndex])
+                }
+                break
+            }
+            case 1: {
+                let path = sAds.getPathList()[0]
+                point.copyFrom(path.getPointAt(path.getClosestPositionTo(v1)))
+                break
+            }
+        }
 
-        // console.log("-- " + v1)
-        let path = sAds.getPathList()[0]
-        // console.log("- " + this.name)
-
-        point.copyFrom(path.getPointAt(path.getClosestPositionTo(v1)))
         VectorUtils.v3OffsetInPlace(point, p, q)
 
-        // console.log(this._adsList[0].signedDistanceTo(Temp.tV1))
-        // console.log(v1)
-        // console.log("----- " + sAds)
         let tn = sAds.getPlaneNormal()!
         tn.rotateByQuaternionToRef(q, tn)
-
         return { datumPlane: Plane.FromPositionAndNormal(point, tn) }
     }
 

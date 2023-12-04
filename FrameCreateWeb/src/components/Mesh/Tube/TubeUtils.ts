@@ -120,8 +120,6 @@ export default class TubeUtils {
                 pP.copyFrom(pickPoint)
                 console.log("gen datumPlane err")
             }
-            // console.log(pickMesh.getFacetLocalPartitioning())
-            // console.log(pickMesh.getFacetNormal(pInfo.faceId))
         } else { // 在地面上移动
             const distance = ray?.intersectsPlane(this._groundPlane);
             if (!distance) return

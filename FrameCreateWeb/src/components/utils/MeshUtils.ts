@@ -22,12 +22,10 @@ export class MeshUtils {
         const vp = camera.viewport.toGlobal(
             scene.getEngine().getRenderWidth(), scene.getEngine().getRenderHeight()
         )
-
         const minX = Math.min(sP.x, eP.x)
         const minY = Math.min(sP.y, eP.y)
         const maxX = Math.max(sP.x, eP.x)
         const maxY = Math.max(sP.y, eP.y)
-
         return mList.filter((m) => {
             if (m.parent) return false
             const tsP = Vector3.Project(
@@ -74,20 +72,27 @@ export class MeshUtils {
         let lines: Vector3[][] = [];
         let nLiens: Vector3[][] = [];
         m.getAdsList().forEach(ads => {
-            if (ads.getType() == 1) {
-                ads.getPathList().forEach(path => {
-                    let pathList = path.path
-                    lines.push(pathList)
-                    path.getNormals().forEach((n, i) => {
-                        let p = pathList[i]
+            switch (ads.getType()) {
+                case 0: {
+                    let n = ads.getPlaneNormal()!
+                    ads.getPointList().forEach(p => {
                         let nn = n.multiplyByFloats(0.3, 0.3, 0.3).addInPlace(p)
                         nLiens.push([p, nn])
                     });
-                });
-            } else {
-                ads.getPointList().forEach(point => {
-
-                });
+                    break
+                }
+                case 1: {
+                    ads.getPathList().forEach(path => {
+                        let pathList = path.path
+                        lines.push(pathList)
+                        path.getNormals().forEach((n, i) => {
+                            let p = pathList[i]
+                            let nn = n.multiplyByFloats(0.3, 0.3, 0.3).addInPlace(p)
+                            nLiens.push([p, nn])
+                        });
+                    });
+                    break
+                }
             }
         });
         this.createMeshLineSystem(s, m, lines).color = Color3.Red();

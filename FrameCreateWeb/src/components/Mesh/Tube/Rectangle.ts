@@ -22,12 +22,10 @@ export default class Rectangle extends Tube {
 
     genAdsData() {
         super.genAdsData()
-
         const w = this.shapeW
         const h = this.shapeH
         const o = this._getShapeOffset()
         let pointList = VectorUtils.v2List([0, o.y, w + o.x, 0, 0, h + o.y, o.x, 0])
-        console.log(pointList)
         let normalList = VectorUtils.v2List([0, -1, 1, 0, 0, 1, -1, 0])
         this._genAdsPathList(pointList, normalList)
         this._genTBAdsPointList(VectorUtils.v2List([0, 0, 0, o.y, w + o.x, 0, 0, h + o.y, o.x, 0]))
