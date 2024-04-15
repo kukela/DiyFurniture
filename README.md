@@ -9,6 +9,8 @@
 
 3D设计软件正在开发中。
 
+预览地址：https://kukela.gitee.io/diy-furniture/
+
 ![x](img/index/fc.jpg)
 
 **[设计大纲](https://gitee.com/kukela/diy-furniture/blob/master/doc/设计大纲.md)**
