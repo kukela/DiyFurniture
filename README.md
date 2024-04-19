@@ -28,3 +28,9 @@
 **[介绍视频，正在制作中]()**
 
 ![x](img/玄关柜/ZQ1.png)
+
+### 2.2. 其他示例预览
+
+![x](img/index/yl1.jpg)
+
+![x](img/index/yl2.jpg)
