@@ -9,7 +9,7 @@
 
 3D设计软件正在开发中。
 
-预览地址：https://kukela.gitee.io/diy-furniture/
+预览地址：https://frame-create-web.pages.dev/、https://kukela.gitee.io/diy-furniture/
 
 ![x](img/index/fc.jpg)
 
